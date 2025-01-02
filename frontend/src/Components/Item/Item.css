@@ -1,0 +1,84 @@
+.item {
+    width: 21%;
+    background-color: #ffffff; /* Add a clean background */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    padding: 10px; /* Consistent padding */
+    text-align: center;
+    transition: transform 0.3s ease-in-out; /* Smooth hover scaling */
+  }
+  
+  .item img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Prevent overly tall images */
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .item p {
+    margin: 6px 0;
+    font-size: 16px;
+    color: #374151;
+    font-weight: 500;
+  }
+  
+  .item-prices {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* Center-align prices */
+    align-items: center;
+  }
+  
+  .item-price-new {
+    color: #374151;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .item-price-old {
+    color: #8c8c8c;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: line-through;
+  }
+  
+  .item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 800px) {
+    .item {
+      width: 35%;
+    }
+  
+    .item-price-new,
+    .item-price-old {
+      font-size: 14px; /* Adjust font size for smaller screens */
+    }
+  
+    .item img {
+      max-height: 150px; /* Reduce image height on smaller screens */
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .item {
+      width: 90%; /* Full width for very small screens */
+      margin: 0 auto; /* Center-align items */
+    }
+  
+    .item p {
+      font-size: 14px;
+    }
+  
+    .item-price-new,
+    .item-price-old {
+      font-size: 12px; /* Further adjust font size */
+    }
+  }
+  

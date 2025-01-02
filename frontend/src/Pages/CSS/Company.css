@@ -1,0 +1,29 @@
+.company {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .company h1 {
+    font-size: 2em;
+    color: #333;
+    text-align: center;
+  }
+  
+  .company-intro,
+  .company-mission,
+  .company-values {
+    margin-top: 20px;
+  }
+  
+  .company-mission h2,
+  .company-values h2 {
+    font-size: 1.5em;
+    color: #555;
+  }
+  
+  .company-values ul {
+    list-style-type: square;
+    padding-left: 20px;
+  }
+  

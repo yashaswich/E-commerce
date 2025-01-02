@@ -1,0 +1,104 @@
+/* Main search page container */
+.search-page {
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 100px;
+}
+
+/* Page title */
+.search-title {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Flexbox container for search results */
+
+.results-container {
+  margin: 20px 170px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 80px;
+}
+
+
+/* Message for no search results */
+.no-results-message {
+  font-size: 18px;
+  color: #777;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Pagination container */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Pagination buttons */
+.pagination button {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for pagination buttons */
+.pagination button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+/* Active page button styling */
+.pagination button.active,
+.pagination button:disabled {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  cursor: default;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .results-container {
+    gap: 15px;
+  }
+
+  .pagination button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .results-container {
+    flex-direction: row; /* Single row layout on very small screens */
+    gap: 15px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .pagination button {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+}
