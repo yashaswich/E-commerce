@@ -84,3 +84,26 @@
         font-size: 17px;
     }
 }
+
+.forgot-links {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .forgot-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0 5px;
+    font-size: 18px;
+  }
+  
+  .forgot-link:hover {
+    color: #0056b3;
+  }
+  
+  .divider {
+    color: #555;
+    margin: 0 5px;
+  }
+  

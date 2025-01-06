@@ -104,6 +104,8 @@ const Users = mongoose.model("Users", {
     type: String,
     default: 'active',
   },
+  otp: { type: Number },
+  otpExpiry: { type: Date, default: Date.now()},
   
 });
 
@@ -678,6 +680,107 @@ app.post('/requestPasswordReset', async (req, res) => {
     res.status(500).json({ success, errors: 'Server error during password reset request' });
   }
 });
+
+app.post('/requestUsernameReset', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await Users.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, errors: "User not found" });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
+    user.otp = otp;
+    user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+    await user.save();
+
+    // Send OTP via email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      to: user.email,
+      subject: 'Username Recovery OTP',
+      text: `Your OTP code is ${otp}. It is valid for 15 minutes.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ success: true, message: 'OTP sent to email' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, errors: 'Server error' });
+  }
+});
+async function sendOtpEmail(email, otp) {
+  // Replace with your email service configuration
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    to: email,
+    from: process.env.EMAIL_USER,
+    subject: 'Your OTP Code',
+    text: `Your OTP code is ${otp}. It is valid for 15 minutes.`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+app.post('/verifyOtpAndResetUsername', async (req, res) => {
+  const { email, otp, resendOtp } = req.body; // Include `resendOtp` flag
+
+  try {
+    const user = await Users.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, errors: "User not found" });
+    }
+
+    if (resendOtp) {
+      // Generate a new OTP and expiry
+      const newOtp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+      const otpExpiry = Date.now() + 15 * 60 * 1000; // Valid for 15 minutes
+
+      // Save the new OTP and expiry to the user record
+      user.otp = newOtp;
+      user.otpExpiry = otpExpiry;
+      await user.save();
+
+      // Send OTP via email (or SMS)
+      // Example: Replace with your email/SMS service
+      await sendOtpEmail(user.email, newOtp);
+
+      return res.status(200).json({ success: true, message: "OTP resent successfully" });
+    }
+
+    // Verify the OTP
+    if (user.otp !== parseInt(otp) || Date.now() > user.otpExpiry) {
+      return res.status(400).json({ success: false, errors: "Invalid or expired OTP" });
+    }
+
+    // Clear OTP fields
+    user.otp = null;
+    user.otpExpiry = null;
+    await user.save();
+
+    // Respond with the username
+    res.status(200).json({ success: true, username: user.name });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, errors: 'Server error', message: error.message });
+  }
+});
+
 
 
 // Verify OTP and Reset Password
